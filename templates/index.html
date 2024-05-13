@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bin Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Smart Bin Status</h1>
+    <button id="startBtn" class="btn">Check Bin Status</button>
+    <div id="statusResult" class="status"></div>
+
+    <script>
+        function fetchBinStatus() {
+            fetch("/bin_status")
+                .then(response => response.json())
+                .then(data => {
+                    const statusElement = document.getElementById("statusResult");
+                    statusElement.textContent = `Distance: ${data.distance} cm\n${data.status}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        document.getElementById("startBtn").addEventListener("click", function () {
+            fetchBinStatus();
+            setInterval(fetchBinStatus, 5000); // Fetch status every 5 seconds
+        });
+    </script>
+</body>
+
+</html>
+
+
